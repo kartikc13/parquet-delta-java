@@ -1,0 +1,63 @@
+plugins {
+    id 'java'
+}
+apply plugin: 'java'
+
+group 'org.example'
+version '1.0-SNAPSHOT'
+
+repositories {
+    // Annotation: please always set our private nexus as the first repo when run CI pipeline.
+//    maven {
+//        if (null == System.getenv("NEXUS_USER") || null == System.getenv("NEXUS_PASSWORD")) {
+//            throw StopExecutionException("Required NEXUS_USER or NEXUS_PASSWORD environment variable not set. Refer https://docs.eurekacloud.io/how-to/access-nexus/ for details.")
+//        }
+//        url = uri("https://nexus.eurekacloud.io/repository/maven-public/")
+//        credentials {
+//            username = System.getenv('NEXUS_USER')
+//            password = System.getenv('NEXUS_PASSWORD')
+//        }
+//        authentication {
+//            basic(BasicAuthentication)
+//        }
+//    }
+    mavenCentral()
+}
+
+dependencies {
+    implementation "org.apache.spark:spark-sql_${property('scala-version')}:${property('spark-version')}"
+    implementation "org.apache.spark:spark-sql-kafka-0-10_${property('scala-version')}:${property('spark-version')}"
+    implementation "org.apache.hadoop:hadoop-azure:${property('hadoop-azure-version')}"
+    implementation group: 'org.apache.hadoop', name: 'hadoop-common', version: '3.3.2'
+    implementation "io.delta:delta-core_${property('scala-version')}:1.2.0"
+    implementation "org.springframework:spring-core:5.3.19"
+    implementation ("io.temporal:temporal-sdk:${property('temporal-sdk-version')}")
+}
+
+test {
+    useJUnitPlatform()
+}
+
+task copyDependantLibs(type: Copy) {
+//    from configurations.compileClasspath
+    def artifactsToCopy = configurations.runtimeClasspath.resolvedConfiguration.resolvedArtifacts
+
+    def filesToCopy = []
+    artifactsToCopy.each {
+        artifact -> filesToCopy.add(artifact.getFile())
+    }
+
+    from filesToCopy
+    into "$buildDir/dependant-libs"
+}
+
+jar {
+    manifest {
+        attributes(
+                'Main-Class': 'org.example.Main'
+        )
+    }
+}
+
+// Enforce to execute copyDependantLibs (copy all dependencies to a specific directory) in the build task.
+tasks.build.dependsOn(copyDependantLibs)
