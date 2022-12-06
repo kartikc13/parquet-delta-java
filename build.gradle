@@ -30,8 +30,6 @@ dependencies {
     implementation "org.apache.hadoop:hadoop-azure:${property('hadoop-azure-version')}"
     implementation group: 'org.apache.hadoop', name: 'hadoop-common', version: '3.3.2'
     implementation "io.delta:delta-core_${property('scala-version')}:1.2.0"
-    implementation "org.springframework:spring-core:5.3.19"
-    implementation ("io.temporal:temporal-sdk:${property('temporal-sdk-version')}")
 }
 
 test {
