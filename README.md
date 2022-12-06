@@ -9,5 +9,5 @@ This should create a folder under the project root as `/build/dependent-libs/` w
 
 Finally, run the spark submit command (ensure to start the Spark master prior to this)<br>
 `$SPARK_HOME/bin/spark-submit --jars ``echo build/dependant-libs/* | tr ' ' ','`` ./build/libs/parquet-delta-java-1.0-SNAPSHOT.jar`<br>
-**NOTE:** This works only in Linux systems<br>
+**NOTE:** This works only in Linux systems. Also, update the file location in the command as per the directory in your local system.<br>
 $SPARK_HOME --> The location of your spark installation until `/libexec` 
