@@ -14,8 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Main {
-    public final static String READPATH = "file:///Users/I077063/Documents/Spark Sample/parquet-delta/currencycodes.snappy.parquet";
-    public final static String WRITEPATH = "file:///Users/I077063/Documents/Spark Sample/parquet-delta/delta-data";
+    public final static String READPATH = "file:///Users/I077063/Documents/GitHub/parquet-delta-java/sample-data/currencycodes.snappy.parquet";
+    public final static String WRITEPATH = "file:///Users/I077063/Documents/GitHub/parquet-delta-java/sample-data/delta-data";
 
     public static void main(String[] args) {
         //Create Spark Session
